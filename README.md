@@ -12,4 +12,4 @@
 - [ ] Establish User Document
 
 # Acknowledgement
-This project is based on [DeepSolo](https://github.com/ViTAE-Transformer/DeepSolo) and [Adelaidet](https://github.com/aim-uofa/AdelaiDet). We appreciate thier wonderful codebase. For academic use, this project is licensed under the 2-clause BSD License.
+This project is based on [DeepSolo](https://github.com/ViTAE-Transformer/DeepSolo) and [Adelaidet](https://github.com/aim-uofa/AdelaiDet). We appreciate their wonderful codebase. For academic use, this project is licensed under the 2-clause BSD License.
