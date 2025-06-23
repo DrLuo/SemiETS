@@ -1,0 +1,62 @@
+_BASE_: "../../Base_det.yaml"
+
+MODEL:
+  META_ARCHITECTURE: "TransformerPureDetectorV2" #no o2m in sup：student.use_o2m =False
+  WEIGHTS: "output/R50/150k_tt/pretrain/model_ts_final.pth"
+#  WEIGHTS: "output/R50/150k_tt/finetune/semi-detr-spotter-paper_5s/model_0000999.pth"
+  TRANSFORMER:
+    LOSS:
+      USE_DYNAMIC_K: False
+      O2M_MATCH_NUM: 5
+      LEVEN_ALPHA : 20
+      COST_ALPHA : 20  #rec
+      ADP_POINT_COORD_WEIGHT: 1.0
+      ADP_POINT_TEXT_WEIGHT: 0.5
+      ADP_BOUNDARY_WEIGHT: 0.5
+      DET_ADAPTIVE_TYPE: 'edit_distance'
+
+DATASETS:
+  TRAIN: ("totaltext_train_10_label", "totaltext_train_10_unlabel")
+  TEST: ("totaltext_test",)
+
+SOLVER:
+  IMS_PER_BATCH: 12 #debug
+  SOURCE_RATIO: (1,2)
+  BASE_LR: 1e-5
+  LR_BACKBONE: 1e-6
+  WARMUP_ITERS: 0
+  STEPS: (100000,)  # no step
+  MAX_ITER: 20000
+  CHECKPOINT_PERIOD: 1000
+  FIND_UNUSED_PARAMETERS: True
+
+SSL:
+  MODE: "mean-teacher"
+  SEMI_WRAPPER: "SemiETSTextSpotter"
+  PSEUDO_LABEL_INITIAL_SCORE_THR: 0.4
+  PSEUDO_LABEL_FINAL_SCORE_THR: 0.7
+  USE_SPOTTING_NMS: True
+  USE_SEPERATE_MATCHER: False
+  USE_COMBINED_THR: False
+  O2M_TEXT_O2O: False
+  USE_O2M_ENC : False
+  MIN_PSEDO_BOX_SIZE: 0
+  UNSUP_WEIGHT: 2.0
+  CONSISTENCY_WEIGHT: 1.0
+  AUG_QUERY: False
+  INFERENCE_ON: "teacher"
+  STEP_HOOK: True
+  WARM_UP: 1000  #debug
+  STAGE_WARM_UP: 10000
+  EXTRA_STUDENT_INFO: True
+  USE_CONSISTENCY: False
+  EMA:
+    WARM_UP: 0
+  DECODER_LOSS : ["labels", "texts_psa", "ctrl_points", "bd_points"]
+  O2O_DECODER_LOSS : ["labels", "texts_adaptive_sci", "ctrl_points_adaptive_crc", "bd_points_adaptive_crc"]
+ #ctc hard mining + o2o rcs weighting
+
+TEST:
+  EVAL_PERIOD: 1000
+
+OUTPUT_DIR: "output/R50/150k_tt/Finetune/semi_10s/SemiETS_10s"

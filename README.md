@@ -19,13 +19,33 @@ The official code of
 
 Python 3.8 + Pytorch 1.9.0 + CUDA 11.1 + Detectron2 (v0.6) + ctcdecode
 
+1. Install SemiETS
+
+```
+git clone git@github.com:DrLuo/SemiETS.git
+cd SemiETS
+conda create -n semiets python=3.8 -y
+conda activate semiets
+pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+pip install -r requirements.txt
+python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
+python setup.py build develop
+```
+
+2. Install ctcdecode from [source](https://github.com/parlance/ctcdecode)
+
+```
+git clone --recursive https://github.com/parlance/ctcdecode.git
+cd ctcdecode
+pip install .
+```
 
 
 
 
 ### Preparation
 
-</details>
+<details>
 <summary>Datasets</summary>
 
 Download datasets from [here](https://github.com/ViTAE-Transformer/DeepSolo/blob/main/DeepSolo/README.md#preparation)
@@ -95,6 +115,10 @@ Download datasets from [here](https://github.com/ViTAE-Transformer/DeepSolo/blob
    |  |- gt_*.zip
 ```
 </details>
+
+
+
+
 
 ## Citation
 If you find [SemiETS](https://arxiv.org/abs/2504.09966) useful for your research and applications, please cite using this BibTeX:
