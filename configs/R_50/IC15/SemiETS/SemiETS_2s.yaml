@@ -4,6 +4,7 @@ MODEL:
   META_ARCHITECTURE: "TransformerPureDetectorV2" #no o2m in sup：student.use_o2m =False
   WEIGHTS: "output/R50/150k/pretrain/model_ts_final.pth"
   TRANSFORMER:
+    INFERENCE_TH_TEST: 0.3
     LOSS:
       USE_DYNAMIC_K: False
       O2M_MATCH_NUM: 5
@@ -14,24 +15,35 @@ MODEL:
       DET_ADAPTIVE_TYPE: 'edit_distance'
 
 DATASETS:
-  TRAIN: ("totaltext_train_2_label", "totaltext_train_2_unlabel")
-  TEST: ("totaltext_test",)
+  TRAIN: ("ic15_train_2_label", "ic15_train_2_unlabel")
+  TEST: ("ic15_test",)
+
+INPUT:
+  MIN_SIZE_TRAIN: (800,900,1000,1100,1200,1300,1400)
+  MAX_SIZE_TRAIN: 3000
+  MIN_SIZE_TEST: 1440
+  MAX_SIZE_TEST: 4000
+  CROP:
+    ENABLED: False
+  ROTATE: False
 
 SOLVER:
-  IMS_PER_BATCH: 12 #debug
-  SOURCE_RATIO: (1,2)
+  IMS_PER_BATCH: 8 #debug
+  SOURCE_RATIO: (1,1)
   BASE_LR: 1e-5
   LR_BACKBONE: 1e-6
   WARMUP_ITERS: 0
   STEPS: (100000,)  # no step
-  MAX_ITER: 20000
+  MAX_ITER: 8000
   CHECKPOINT_PERIOD: 1000
   FIND_UNUSED_PARAMETERS: True
+  AMP:
+    ENABLED: True
 
 SSL:
   MODE: "mean-teacher"
   SEMI_WRAPPER: "SemiETSTextSpotter"
-  PSEUDO_LABEL_INITIAL_SCORE_THR: 0.4
+  PSEUDO_LABEL_INITIAL_SCORE_THR: 0.3
   PSEUDO_LABEL_FINAL_SCORE_THR: 0.7
   USE_SPOTTING_NMS: True
   USE_SEPERATE_MATCHER: False
@@ -44,8 +56,8 @@ SSL:
   AUG_QUERY: False
   INFERENCE_ON: "teacher"
   STEP_HOOK: True
-  WARM_UP: 1000  #debug
-  STAGE_WARM_UP: 10000
+  WARM_UP: 1000
+  STAGE_WARM_UP: 2500
   EXTRA_STUDENT_INFO: True
   USE_CONSISTENCY: False
   EMA:
@@ -56,5 +68,7 @@ SSL:
 
 TEST:
   EVAL_PERIOD: 1000
+  # 1 - Generic, 2 - Weak, 3 - Strong (for icdar2015) 4 - training setting
+  LEXICON_TYPE: 4
 
-OUTPUT_DIR: "output/R50/150k_tt/Finetune/semi_2s/SemiETS_full_2s"
+OUTPUT_DIR: "output/R50/150k_tt/IC15/Finetune/semi_2s/SemiETS_2s"

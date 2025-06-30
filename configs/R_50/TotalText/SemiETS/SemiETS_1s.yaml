@@ -2,7 +2,7 @@ _BASE_: "../../Base_det.yaml"
 
 MODEL:
   META_ARCHITECTURE: "TransformerPureDetectorV2" #no o2m in sup：student.use_o2m =False
-  WEIGHTS: "output/R50/150k_tt/pretrain/model_ts_final.pth"
+  WEIGHTS: "output/R50/150k/pretrain/model_ts_final.pth"
   TRANSFORMER:
     LOSS:
       USE_DYNAMIC_K: False

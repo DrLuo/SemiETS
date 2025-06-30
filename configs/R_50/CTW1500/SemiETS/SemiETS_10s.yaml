@@ -1,32 +1,46 @@
 _BASE_: "../../Base_det.yaml"
-
 MODEL:
   META_ARCHITECTURE: "TransformerPureDetectorV2" #no o2m in sup：student.use_o2m =False
-  WEIGHTS: "output/R50/150k/pretrain/model_ts_final.pth"
+  WEIGHTS: "output/R50/150k/pretrain/model_ts_96_final.pth"
   TRANSFORMER:
+    VOC_SIZE: 96
+    NUM_POINTS: 50
     LOSS:
+      BEZIER_SAMPLE_POINTS: 50
+      BEZIER_CLASS_WEIGHT: 1.0
+      BEZIER_COORD_WEIGHT: 0.5
+      POINT_CLASS_WEIGHT: 1.0
+      POINT_COORD_WEIGHT: 0.5
+      POINT_TEXT_WEIGHT: 1.0 #0.5
+      BOUNDARY_WEIGHT: 0.25
+      #########################
       USE_DYNAMIC_K: False
       O2M_MATCH_NUM: 5
-      LEVEN_ALPHA : 20
-      ADP_POINT_COORD_WEIGHT: 1.0
-      ADP_POINT_TEXT_WEIGHT: 0.5
-      ADP_BOUNDARY_WEIGHT: 0.5
+      LEVEN_ALPHA : 20 #det
       DET_ADAPTIVE_TYPE: 'edit_distance'
 
 DATASETS:
-  TRAIN: ("totaltext_train_2_label", "totaltext_train_2_unlabel")
-  TEST: ("totaltext_test",)
+  TRAIN: ("ctw1500_train_10_label", "ctw1500_train_10_unlabel")
+  TEST: ("ctw1500_test",)
+
+
+INPUT:
+  ROTATE: False
+  MIN_SIZE_TEST: 1000
+  MAX_SIZE_TEST: 1200
+
 
 SOLVER:
-  IMS_PER_BATCH: 12 #debug
+  IMS_PER_BATCH: 12
   SOURCE_RATIO: (1,2)
-  BASE_LR: 1e-5
-  LR_BACKBONE: 1e-6
+  BASE_LR: 5e-5
+  LR_BACKBONE: 5e-6
   WARMUP_ITERS: 0
-  STEPS: (100000,)  # no step
-  MAX_ITER: 20000
+  STEPS: (16000,)  #8000
+  MAX_ITER: 24000  #12000
   CHECKPOINT_PERIOD: 1000
   FIND_UNUSED_PARAMETERS: True
+
 
 SSL:
   MODE: "mean-teacher"
@@ -45,7 +59,7 @@ SSL:
   INFERENCE_ON: "teacher"
   STEP_HOOK: True
   WARM_UP: 1000  #debug
-  STAGE_WARM_UP: 10000
+  STAGE_WARM_UP: 4000
   EXTRA_STUDENT_INFO: True
   USE_CONSISTENCY: False
   EMA:
@@ -57,4 +71,5 @@ SSL:
 TEST:
   EVAL_PERIOD: 1000
 
-OUTPUT_DIR: "output/R50/150k_tt/Finetune/semi_2s/SemiETS_full_2s"
+
+OUTPUT_DIR: "output/R50/ctw1500/Finetune/semi_10s/SemiETS_10s"

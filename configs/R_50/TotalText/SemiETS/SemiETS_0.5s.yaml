@@ -2,8 +2,7 @@ _BASE_: "../../Base_det.yaml"
 
 MODEL:
   META_ARCHITECTURE: "TransformerPureDetectorV2" #no o2m in sup：student.use_o2m =False
-  WEIGHTS: "output/R50/150k_tt/pretrain/model_ts_final.pth"
-#  WEIGHTS: "output/R50/150k_tt/finetune/semi-detr-spotter-paper_5s/model_0000999.pth"
+  WEIGHTS: "output/R50/150k/pretrain/model_ts_final.pth"
   TRANSFORMER:
     LOSS:
       USE_DYNAMIC_K: False
@@ -14,8 +13,6 @@ MODEL:
       ADP_BOUNDARY_WEIGHT: 0.5
       DET_ADAPTIVE_TYPE: 'edit_distance'
       PRECISE_TEACHER: True
-
-
 
 DATASETS:
   TRAIN: ("totaltext_train_0.5_label", "totaltext_train_0.5_unlabel")
