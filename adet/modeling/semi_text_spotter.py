@@ -8,7 +8,7 @@ import pickle
 import copy
 import torch.nn.functional as F
 from detectron2.modeling.meta_arch.build import META_ARCH_REGISTRY
-from detectron2.modeling import build_backbone
+from detectron2.modeling import build_backbone, build_model
 from detectron2.structures import ImageList, Instances
 from adet.layers.pos_encoding import PositionalEncoding2D
 # from adet.modeling.model.losses import SetCriterion, SetAdaptiveO2MCriterionFull
